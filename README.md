@@ -1,32 +1,52 @@
-This project is a pedestrian detection and counting application that uses YOLOv8 for detection, Deep SORT for tracking, and a GUI built with Tkinter. It compares detected pedestrian counts against ground truth data and computes performance metrics like MAE, MAPE, and accuracy.
+# 🧍‍♂️ Pedestrian Detection and Counting System
 
-Features
-Detects pedestrians in video files using YOLOv8.
+This project provides a GUI-based tool to detect and count pedestrians in video footage using YOLOv8 and Deep SORT. It allows users to define Regions of Interest (ROIs) manually, track individuals through frames, and evaluate the predicted counts against ground truth data.
 
-Tracks individuals across frames using Deep SORT.
+---
 
-Allows user-defined regions of interest (ROIs) for counting.
+## 📂 Project Structure
 
-GUI for easy video selection and ROI setup.
+pedestrian-detection/
+├── ground_truth.py # Ground truth pedestrian counts per frame
+├── proj.py # Main GUI application and detection pipeline
+├── requirements.txt # Python dependencies
+├── README.md # This documentation
+├── .gitignore # Git ignored files
 
-Compares results against predefined ground truth data.
 
-Outputs annotated video and evaluation metrics.
 
-Requirements
-Install dependencies via pip:
+---
 
-bash
-Copy
-Edit
-pip install opencv-python ultralytics numpy tqdm supervision scikit-learn deep_sort_realtime
-Files
-proj.py: Main script that handles detection, tracking, ROI selection, evaluation, and GUI.
+## 🔧 Features
 
-ground_truth.py: Provides a dictionary of ground truth pedestrian counts for evaluation.
+- GUI interface for video selection and ROI setup.
+- Pedestrian detection using [YOLOv8](https://github.com/ultralytics/ultralytics).
+- Object tracking via [Deep SORT](https://github.com/mikel-brostrom/Yolov5_DeepSort_Pytorch).
+- Draw and define custom regions to monitor pedestrian traffic.
+- Real-time count overlay on video.
+- Annotated video output.
+- Performance evaluation with:
+  - Mean Absolute Error (MAE)
+  - Mean Absolute Percentage Error (MAPE)
+  - Accuracy %
 
-How to Use
-Run the Application
+---
+
+## 📦 Installation
+
+1. **Clone the repository:**
+
+```bash
+git clone https://github.com/yourusername/pedestrian-detection.git
+cd pedestrian-detection
+
+
+Install dependencies:
+
+pip install -r requirements.txt
+
+## Usage
+Run the application:
 
 bash
 Copy
@@ -34,47 +54,47 @@ Edit
 python proj.py
 In the GUI:
 
-Browse and select a video file.
+Click “Browse” to select a video file.
 
-Choose a target folder where the output will be saved.
+Click “Browse” to choose a target folder where results will be saved.
 
-Enter comma-separated region names (e.g., Region1,Region2).
+Enter region names (comma-separated, e.g., Region1,Region2) and click “Start Detection”.
 
-Select ROIs:
+Draw ROIs:
 
-For each region name, draw a polygon by clicking four points in the video frame.
+For each region, select 4 points by clicking in the video frame.
 
-After drawing, press Esc or wait 30 seconds to proceed.
+Press Esc or wait 30 seconds to move to the next.
 
-Detection:
+Results:
 
-The system runs detection and tracking.
+Annotated video saved in your target folder.
 
-Displays pedestrian counts per region.
+Counts are shown in the GUI.
 
-Saves an annotated video and shows evaluation metrics in the terminal.
+Evaluation metrics are printed in the terminal.
 
-Output
-Annotated video saved to the selected target directory.
-
-Pedestrian counts printed in the GUI.
-
-Evaluation metrics printed in the console:
-
-MAE (Mean Absolute Error)
-
-MAPE (Mean Absolute Percentage Error)
-
-Counting Accuracy
-
-Ground Truth Format
-The ground truth data (in ground_truth.py) is structured as follows:
+📊 Ground Truth
+Update ground_truth.py with frame-based expected counts for evaluation:
 
 python
 Copy
 Edit
-{
-    frame_number: {"Region1": count1, "Region2": count2, ...},
-    ...
-}
-Update this dictionary to match your specific video and region frame data for accurate evaluation.
+def get_ground_truth():
+    return {
+        0: {"Region1": 5, "Region2": 3},
+        50: {"Region1": 8, "Region2": 6},
+        100: {"Region1": 12, "Region2": 9},
+        ...
+    }
+Only frames with entries in this dictionary are used for metric calculations.
+
+🧪 Evaluation Metrics
+Displayed in the terminal after video processing:
+
+MAE: Mean difference between predicted and actual counts.
+
+MAPE: Percentage error of the predictions.
+
+Accuracy: 100 - MAPE, capped at 0 if MAPE > 100%.
+
